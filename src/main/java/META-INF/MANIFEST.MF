@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Main-Class: 
+Class-Path: spring-web-5.3.9.jar jackson-core-2.12.4.jar commons-io-2.5.
+ jar spring-boot-starter-data-rest-2.5.4.jar spring-boot-starter-tomcat-
+ 2.5.4.jar jakarta.validation-api-2.0.2.jar spring-boot-autoconfigure-2.
+ 5.4.jar spring-hateoas-1.3.3.jar spring-beans-5.3.9.jar spring-data-res
+ t-core-3.5.4.jar spring-boot-starter-validation-2.5.4.jar spring-boot-s
+ tarter-web-2.5.4.jar spring-data-rest-webmvc-3.5.4.jar jackson-module-p
+ arameter-names-2.12.4.jar jboss-logging-3.4.2.Final.jar spring-tx-5.3.9
+ .jar spring-core-5.3.9.jar spring-jcl-5.3.9.jar spring-plugin-core-2.0.
+ 0.RELEASE.jar tomcat-embed-websocket-9.0.52.jar spring-aop-5.3.9.jar lo
+ mbok-1.18.20.jar spring-boot-2.5.4.jar accessors-smart-2.4.7.jar spring
+ -webmvc-5.3.9.jar log4j-to-slf4j-2.14.1.jar hibernate-validator-6.2.0.F
+ inal.jar evo-inflector-1.2.2.jar snakeyaml-1.28.jar jackson-datatype-js
+ r310-2.12.4.jar json-path-2.5.0.jar jackson-databind-2.12.4.jar json-sm
+ art-2.4.7.jar spring-data-commons-2.5.4.jar spring-boot-starter-json-2.
+ 5.4.jar tomcat-embed-core-9.0.52.jar log4j-api-2.14.1.jar spring-expres
+ sion-5.3.9.jar jackson-annotations-2.12.4.jar slf4j-api-1.7.32.jar asm-
+ 9.1.jar jackson-datatype-jdk8-2.12.4.jar spring-context-5.3.9.jar tomca
+ t-embed-el-9.0.52.jar spring-boot-starter-2.5.4.jar jakarta.annotation-
+ api-1.3.5.jar logback-core-1.2.5.jar classmate-1.5.1.jar jul-to-slf4j-1
+ .7.32.jar logback-classic-1.2.5.jar spring-boot-starter-logging-2.5.4.j
+ ar
+
