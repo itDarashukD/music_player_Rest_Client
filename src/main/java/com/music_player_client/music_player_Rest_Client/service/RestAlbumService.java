@@ -13,7 +13,7 @@ public class RestAlbumService implements IRestAlbumService {
 
     private HttpHeaders httpHeaders;
     private RestTemplate restTemplate;
-    private final String HTTP_REQUEST_GET_ALL_ALBUMS = "http://localhost:8080//album";
+    private final String HTTP_REQUEST_GET_ALL_ALBUMS = "http://localhost:8080/album";
     private final String HTTP_REQUEST_GET_ALBUM_BY_ID = "http://localhost:8080/album/{album_id}";
 
     public void prepareData() {
