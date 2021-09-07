@@ -17,6 +17,7 @@ public class RestSongService implements IRestSongService {
             = "http://localhost:8080/song/file/{name}?file_type={file_type}&storage_type={storage_type}";
 
     public void prepareData() {
+
         //Solution with HTTPHeaders
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders httpHeaders = new HttpHeaders();
