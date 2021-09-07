@@ -1,6 +1,10 @@
 package com.music_player_client.music_player_Rest_Client.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.http.Response;
+import com.music_player_client.music_player_Rest_Client.entity.Song;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
@@ -8,13 +12,16 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
@@ -23,6 +30,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(SpringRunner.class)
 class RestSongServiceTest {
+
+    @Autowired
+    IRestSongService restSongService;
 
     WireMockServer wireMockServer = new WireMockServer(8888);
 //    private final String HTTP_REQUEST_GET_ALL_SONGS = "http://localhost:"+wireMockServer.port()+"/song/";
@@ -36,88 +46,65 @@ class RestSongServiceTest {
 
     @Test
     void getAllSongs() throws IOException {
+        String jsonListSongs =
+                "[{ \"id\" : \"1\", \"album_id\" : \"2\",\"source_id\" : \"1\", \"name\" : \"firstSong\" ,\"notes\" : \"firstSongNotes\", \"year\" : \"2020\",\"storageTypes\" : \"CLOUD_STORAGE\"   }" +
+                        ", { \"id\" : \"2\", \"album_id\" : \"2\",\"source_id\" : \"2\", \"name\" : \"secondSong\" ,\"notes\" : \"secondSongNotes\", \"year\" : \"2021\",\"storageTypes\" : \"FILE_SYSTEM\" }]";
         wireMockServer.start();
         String expectedRequest = "/song/";
         wireMockServer.stubFor(get(urlPathEqualTo(expectedRequest))
                 .willReturn(aResponse()
                         .withHeader("Content-type", "application/json")
-                        .withHeader("Accept", "application/json")
                         .withStatus(HttpStatus.SC_OK)
-                        .withBody("{\"song\":[" +
-                                "\"name\" : \"testSong\"" +
-                                "\"notes\" : \"testNotes\"" +
-                                "\"year\" : \"testYear\"" +
-                                "\"storageTypes\" : \"testStorageTypes\"]}")));
-//        restTemplate = new RestTemplate();
-//        ResponseEntity<String> response = restTemplate.getForEntity("http://localhost:8080/song/", String.class);
+                        .withBody(jsonListSongs)));
 
-        String URL = "http://localhost:8888/song/";
-        HttpClient client = HttpClientBuilder.create().build();
-        HttpGet request = new HttpGet(URL);
-        HttpResponse response = client.execute(request);
+        List<Song> allSongs = restSongService.getAllSongs();
 
-        assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK);
-        assertEquals(response.getEntity().getContentType().getValue(), "application/json");
+        assertEquals(allSongs.get(1).getYear(),2021);
+        assertEquals(allSongs.size(),2);
         wireMockServer.verify(1, getRequestedFor(urlPathEqualTo(expectedRequest)));
 
         wireMockServer.stop();
     }
 
     @Test
-    void findById() throws IOException {
+    void findById() {
         wireMockServer.start();
+        String jsonSong = "{ \"id\" : \"1\", \"album_id\" : \"1\", \"source_id\" : \"2\", \"name\" : \"firstSong\"," +
+                " \"notes\" : \"firstSongNotes\",\"year\" : \"2020\",\"storageTypes\" : \"CLOUD_STORAGE\" }";
+
         String expectedRequest = "/song/getSong/";
         wireMockServer.stubFor(get(urlPathEqualTo(expectedRequest))
                 .willReturn(aResponse()
                         .withHeader("Content-type", "application/json")
-                        .withHeader("Accept", "application/json")
                         .withStatus(HttpStatus.SC_OK)
-                        .withBody("{\"song\":[" +
-                                "\"name\" : \"testSong\"" +
-                                "\"notes\" : \"testNotes\"" +
-                                "\"year\" : \"testYear\"" +
-                                "\"storageTypes\" : \"testStorageTypes\"]}")));
+                        .withBody(jsonSong)));
 
-        String URL = "http://localhost:8888/song/getSong/1";
-        HttpClient client = HttpClientBuilder.create().build();
-        HttpGet request = new HttpGet(URL);
-        HttpResponse response = client.execute(request);
-
-        assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK);
-        assertEquals(response.getEntity().getContentType().getValue(), "application/json");
+        Song songById = restSongService.findById(1L);
+        assertEquals(songById.getId(),1L);
+        assertEquals(songById.getYear(),2020);
         wireMockServer.verify(1, getRequestedFor(urlPathEqualTo(expectedRequest)));
 
         wireMockServer.stop();
     }
 
     @Test
-    void getFile() throws IOException {
-        byte[] testBody = "some test file".getBytes();
-        wireMockServer.start();
+    void getFile() {
+        byte[] testBody = "some test file".getBytes(StandardCharsets.UTF_8);
         String expectedRequest = "/song/file/.*";
-        wireMockServer.stubFor(get(urlMatching("/song/file/.*"))
+
+        wireMockServer.start();
+
+        wireMockServer.stubFor(get(urlMatching(expectedRequest))
                 .willReturn(aResponse()
-                        .withHeader("Content-type", "application/json")
-                        .withHeader("Accept", "application/json")
+                        .withHeader("Content-type", "application/octet-stream")
                         .withStatus(HttpStatus.SC_OK)
                         .withBody(testBody))
         );
 
-        String URL = "http://localhost:8888/song/file/testName?file_type=testFile_type&storage_type=testStorage_type";
-        HttpClient client = HttpClientBuilder.create().build();
-        HttpGet request = new HttpGet(URL);
-        request.setHeader("Content-Type" ,"application/json");
-        request.setHeader("Accept" ,"application/json");
-        HttpResponse response = client.execute(request);
-
-        assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK);
-        assertEquals(response.getEntity().getContentType().getValue(), "application/json");
-        assertArrayEquals(response.getEntity().getContent().readAllBytes(), testBody);
+        byte[] file = restSongService.getFile("songName", "mp3", "CLOUD_STORAGE");
 
         wireMockServer.verify(1, getRequestedFor(urlMatching(expectedRequest)));
-        wireMockServer.verify(getRequestedFor(urlMatching(expectedRequest))
-                .withHeader("Content-Type", equalTo("application/json"))
-                .withHeader("Accept", equalTo("application/json")));
+        assertArrayEquals(file,testBody);
 
         wireMockServer.stop();
     }

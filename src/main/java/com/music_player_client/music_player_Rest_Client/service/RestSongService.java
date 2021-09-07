@@ -11,10 +11,10 @@ import java.util.List;
 @Service
 public class RestSongService implements IRestSongService {
 
-    private final String HTTP_REQUEST_GET_ALL_SONGS = "http://localhost:8080/song/";
-    private final String HTTP_REQUEST_GET_SONG_BY_ID = "http://localhost:8080/song/getSong/{song_id}";
+    private final String HTTP_REQUEST_GET_ALL_SONGS = "http://localhost:8888/song/";
+    private final String HTTP_REQUEST_GET_SONG_BY_ID = "http://localhost:8888/song/getSong/{song_id}";
     private final String HTTP_REQUEST_GET_FILE_IN_ARRAY
-            = "http://localhost:8080/song/file/{name}?file_type={file_type}&storage_type={storage_type}";
+            = "http://localhost:8888/song/file/{name}?file_type={file_type}&storage_type={storage_type}";
 
     public void prepareData() {
 
@@ -25,7 +25,7 @@ public class RestSongService implements IRestSongService {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.set("my_outher_key", "my_outher_value");
         HttpEntity<Song[]> entity = new HttpEntity<>(httpHeaders);
-        ResponseEntity<Song[]> response = restTemplate.exchange(HTTP_REQUEST_GET_ALL_SONGS, //
+        ResponseEntity<Song[]> response = restTemplate.exchange(HTTP_REQUEST_GET_ALL_SONGS,
                 HttpMethod.GET, entity, Song[].class);
         Song[] list = response.getBody();
     }
@@ -44,19 +44,20 @@ public class RestSongService implements IRestSongService {
     }
 
     @Override
-    public ResponseEntity<byte[]> getFile(String songName, String fileType, String storageType) {
+    public byte[] getFile(String songName, String fileType, String storageType) {
         byte[] songFile = getRestTemplate().getForObject(HTTP_REQUEST_GET_FILE_IN_ARRAY
                 , byte[].class
                 , songName
                 , fileType
                 , storageType);
+        return songFile;
 
-        return ResponseEntity
-                .ok()
-                .contentLength(songFile.length)
-                .header("Content-type", "application/octet-stream")
-                .header("Content-disposition", "attachment; filename=\"" + songName + "\"")
-                .body(songFile);
+//        return ResponseEntity
+//                .ok()
+//                .contentLength(songFile.length)
+//                .header("Content-type", "application/octet-stream")
+//                .header("Content-disposition", "attachment; filename=\"" + songName + "\"")
+//                .body(songFile);
     }
 }
 
