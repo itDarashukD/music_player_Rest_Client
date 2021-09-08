@@ -1,90 +1,80 @@
 package com.music_player_client.music_player_Rest_Client.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.http.Response;
+import com.github.tomakehurst.wiremock.core.Options;
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.music_player_client.music_player_Rest_Client.entity.Song;
-import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.*;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.test.util.ReflectionTestUtils;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static org.junit.jupiter.api.Assertions.*;
 
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(SpringRunner.class)
+@ActiveProfiles(profiles = "test")
 class RestSongServiceTest {
 
     @Autowired
     IRestSongService restSongService;
 
-    WireMockServer wireMockServer = new WireMockServer(8888);
-//    private final String HTTP_REQUEST_GET_ALL_SONGS = "http://localhost:"+wireMockServer.port()+"/song/";
-//    private final String HTTP_REQUEST_GET_SONG_BY_ID = "http://localhost:8080/song/getSong/1";
-//    private final String HTTP_REQUEST_GET_FILE_IN_ARRAY
-//            = "http://localhost:8080/song/file/testName?file_type=testFile_type&storage_type=testStorage_type";
+    private WireMockRule wireMockRule;
 
-//    @Rule
-//    public WireMockRule wireMockRule = new WireMockRule(wireMockConfig().dynamicPort().dynamicHttpsPort()); good for multithreading
-//    public WireMockRule wireMockRule = new WireMockRule(wireMockConfig().port(8888));
+    @BeforeEach
+    public void setUp() {
+        wireMockRule = new WireMockRule(Options.DYNAMIC_PORT);
+        wireMockRule.start();
+        int port = wireMockRule.port();
+        ReflectionTestUtils.setField(restSongService, "port", String.valueOf(port));
+    }
+
+    @AfterEach
+    public void tearDown() {
+        wireMockRule.stop();
+    }
 
     @Test
-    void getAllSongs() throws IOException {
-        String jsonListSongs =
-                "[{ \"id\" : \"1\", \"album_id\" : \"2\",\"source_id\" : \"1\", \"name\" : \"firstSong\" ,\"notes\" : \"firstSongNotes\", \"year\" : \"2020\",\"storageTypes\" : \"CLOUD_STORAGE\"   }" +
-                        ", { \"id\" : \"2\", \"album_id\" : \"2\",\"source_id\" : \"2\", \"name\" : \"secondSong\" ,\"notes\" : \"secondSongNotes\", \"year\" : \"2021\",\"storageTypes\" : \"FILE_SYSTEM\" }]";
-        wireMockServer.start();
+    void getAllSongs() {
         String expectedRequest = "/song/";
-        wireMockServer.stubFor(get(urlPathEqualTo(expectedRequest))
+        wireMockRule.stubFor(get(urlPathEqualTo(expectedRequest))
                 .willReturn(aResponse()
                         .withHeader("Content-type", "application/json")
                         .withStatus(HttpStatus.SC_OK)
-                        .withBody(jsonListSongs)));
+                        .withBodyFile("listSongs.json")));
 
         List<Song> allSongs = restSongService.getAllSongs();
 
-        assertEquals(allSongs.get(1).getYear(),2021);
-        assertEquals(allSongs.size(),2);
-        wireMockServer.verify(1, getRequestedFor(urlPathEqualTo(expectedRequest)));
-
-        wireMockServer.stop();
+        assertEquals(allSongs.get(1).getYear(), 2021);
+        assertEquals(allSongs.size(), 2);
+        wireMockRule.verify(1, getRequestedFor(urlPathEqualTo(expectedRequest)));
     }
 
     @Test
     void findById() {
-        wireMockServer.start();
-        String jsonSong = "{ \"id\" : \"1\", \"album_id\" : \"1\", \"source_id\" : \"2\", \"name\" : \"firstSong\"," +
-                " \"notes\" : \"firstSongNotes\",\"year\" : \"2020\",\"storageTypes\" : \"CLOUD_STORAGE\" }";
-
-        String expectedRequest = "/song/getSong/";
-        wireMockServer.stubFor(get(urlPathEqualTo(expectedRequest))
+        String expectedRequest = "/song/getSong/1";
+        wireMockRule.stubFor(get(urlPathEqualTo(expectedRequest))
                 .willReturn(aResponse()
                         .withHeader("Content-type", "application/json")
                         .withStatus(HttpStatus.SC_OK)
-                        .withBody(jsonSong)));
+                        .withBodyFile("song.json")));
 
         Song songById = restSongService.findById(1L);
-        assertEquals(songById.getId(),1L);
-        assertEquals(songById.getYear(),2020);
-        wireMockServer.verify(1, getRequestedFor(urlPathEqualTo(expectedRequest)));
 
-        wireMockServer.stop();
+        assertEquals(songById.getId(), 1L);
+        assertEquals(songById.getYear(), 2020);
+        wireMockRule.verify(1, getRequestedFor(urlPathEqualTo(expectedRequest)));
     }
 
     @Test
@@ -92,9 +82,7 @@ class RestSongServiceTest {
         byte[] testBody = "some test file".getBytes(StandardCharsets.UTF_8);
         String expectedRequest = "/song/file/.*";
 
-        wireMockServer.start();
-
-        wireMockServer.stubFor(get(urlMatching(expectedRequest))
+        wireMockRule.stubFor(get(urlMatching(expectedRequest))
                 .willReturn(aResponse()
                         .withHeader("Content-type", "application/octet-stream")
                         .withStatus(HttpStatus.SC_OK)
@@ -103,9 +91,17 @@ class RestSongServiceTest {
 
         byte[] file = restSongService.getFile("songName", "mp3", "CLOUD_STORAGE");
 
-        wireMockServer.verify(1, getRequestedFor(urlMatching(expectedRequest)));
-        assertArrayEquals(file,testBody);
-
-        wireMockServer.stop();
+        wireMockRule.verify(1, getRequestedFor(urlMatching(expectedRequest)));
+        assertArrayEquals(file, testBody);
     }
 }
+
+//// *  JUnit 4.11 and above prohibits @Rule on static members so a slightly more verbose form, current version is 4.12*/
+//    @ClassRule
+//    public static WireMockClassRule wireMockRule = new WireMockClassRule(Options.DYNAMIC_PORT);
+//
+//    @Rule
+//    public WireMockClassRule instanceRule = wireMockRule;
+//    @Rule
+//    public WireMockRule wireMockRule = new WireMockRule(wireMockConfig().dynamicPort().dynamicHttpsPort()); good for multithreading
+//    public WireMockRule wireMockRule = new WireMockRule(wireMockConfig().port(8888));
