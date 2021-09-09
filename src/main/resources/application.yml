@@ -1,0 +1,82 @@
+spring:
+  profiles:
+    active:
+      - dev
+#      - ${EXPEDIA_ENVIRONMENT:test}  //with use SYSTEM VARIABLES
+  application:
+    name: "music_player_Rest_Client"
+---
+
+spring:
+  config:
+    activate:
+      on-profile: test
+name: test-YAML
+environment: testing
+
+port: 0
+host: "http://localhost:"
+
+#next for clarity
+database:
+  jdbc:
+    url: jdbc:postresql:/localhost:5432
+  username: foo
+  password: bar
+
+security:
+  user: user
+  password: weak
+
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+name: prod-YAML
+environment: production
+#next for clarity
+component:
+  idm:
+      url: myurl
+      user: user
+      password: password
+      description: >
+        this should be a long
+        description
+  service:
+      url: myurlservice
+      token: token
+      description: >
+        this should be another long
+        description
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+name: ${DEV_NAME:dev-YAML}
+environment: development
+
+server:
+  port: 8081
+
+port: 8080
+host: "http://localhost:"
+
+#next for clarity
+database:
+  jdbc:
+    url: jdbc:postresql:/localhost:5432
+  username: devName
+  password: devPass
+secret: foo
+
+security:
+  user: user
+  password: weak
+
