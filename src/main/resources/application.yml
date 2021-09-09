@@ -59,6 +59,16 @@ spring:
   config:
     activate:
       on-profile: dev
+
+  datasource:
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+    url: "jdbc:hsqldb:hsql://localhost/"
+    username: "sa"
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+
 name: ${DEV_NAME:dev-YAML}
 environment: development
 
