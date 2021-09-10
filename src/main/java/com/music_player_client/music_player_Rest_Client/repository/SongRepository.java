@@ -6,11 +6,10 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-
 @Mapper
 public interface SongRepository {
     @Insert("Insert into Song(album_id,name,notes, year) values (#{album_id},#{name},#{notes},#{year})")
-    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+  //  @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     void save(Song song);
 
     @Update("Update Song set year= #{year}, notes= #{notes}, name= #{name} where id=#{id}")
