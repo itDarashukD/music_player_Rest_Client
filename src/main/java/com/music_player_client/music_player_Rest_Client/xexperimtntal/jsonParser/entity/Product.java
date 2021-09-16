@@ -6,12 +6,13 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product  {
+public class Product {
 
     private String productId;
     private String productType;
@@ -25,15 +26,15 @@ public class Product  {
     private String updatedAt;
     private String effectiveDate;
     private String expirationDate;
-    private ArrayList<Map<String, String >> modifiers = new ArrayList<>();
-    private ArrayList<Map<String, Object>> sizes = new ArrayList<>();
-    private ArrayList<Map<String, String>> buildRelatedModifierGroups = new ArrayList<>();
-    private ArrayList<Map<String, String>> condiments = new ArrayList<>();
+    private List<Map<String, String>> modifiers;
+    private List<Map<String, Object>> sizes;
+    private List<Map<String, String>> buildRelatedModifierGroups;
+    private List<Map<String, String>> condiments;
     private String calories;
     private String contentId;
     private String defaultUpsellComboProductId;
-    private Map<String ,Integer>caloriesRange=new HashMap<>();
-    private ArrayList<Map<String, String>> categories = new ArrayList<>();
+    private Map<String, Integer> caloriesRange;
+    private List<Map<String, String>> categories;
 }
 //  "productId": "5",
 //          "productType": "COMBO",

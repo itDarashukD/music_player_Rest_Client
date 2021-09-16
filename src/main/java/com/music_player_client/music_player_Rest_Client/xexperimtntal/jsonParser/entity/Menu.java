@@ -6,19 +6,20 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Menu implements Serializable {
+public class Menu {
 
-    private ArrayList<String>menu = new ArrayList<>(){
-    };
+//    private List<String> menu ;
     private String menuId;
     private String menuName;
     private String rootCategoryId;
     private String createdAt;
     private String updatedAt;
+
 //    "menuId": "151",
 //            "menuName": "National Menu",
 //            "rootCategoryId": "154",

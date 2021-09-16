@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -14,7 +15,6 @@ import java.util.Map;
 @NoArgsConstructor
 public class Category implements Serializable {
 
-    private ArrayList<Map<String, Object>>categories = new ArrayList<>();
     private String categoryName;
     private String type;
     private String quantity;
@@ -30,8 +30,8 @@ public class Category implements Serializable {
     private String updatedAt;
     private String contentId;
     private String showAtCheckout;
-    private ArrayList<Map<String, String>> categoryWithId = new ArrayList<>();
-    private ArrayList<Map<String, String>> products = new ArrayList<>();
+    private List<ChildCategory> categories;
+    private List<Map<String, String>> products ;
 }
 //"categoryId": "55",
 //        "categoryName": "Slushes",

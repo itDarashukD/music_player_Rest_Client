@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -13,8 +14,9 @@ import java.util.ArrayList;
 public class National_menu implements Serializable {
 
     private Menu menu;
-    private ArrayList<Category> categories = new ArrayList<>();
-    private ArrayList<Modifier> modifiers = new ArrayList<>();
-    private ArrayList<ModifierGroup> modifierGroups = new ArrayList<>();
-    private ArrayList<Product> products = new ArrayList<>();
+    private List<Category> categories ;
+    private List<Modifier> modifiers ;
+    private List<ModifierGroup> modifierGroups ;
+    private List<Product> products ;
+    private List<ChildCategory>childCategories;
 }
