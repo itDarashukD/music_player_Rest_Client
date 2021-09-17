@@ -5,13 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class Menu {
+@AllArgsConstructor
+public class ChildProduct {
 
-    private String menuId;
-    private String menuName;
-    private String rootCategoryId;
-    private String createdAt;
-    private String updatedAt;
+    private String productId;
 }

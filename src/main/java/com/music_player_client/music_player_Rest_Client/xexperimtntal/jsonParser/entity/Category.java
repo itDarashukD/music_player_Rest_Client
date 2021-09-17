@@ -31,25 +31,5 @@ public class Category implements Serializable {
     private String contentId;
     private String showAtCheckout;
     private List<ChildCategory> categories;
-    private List<Map<String, String>> products ;
+    private List<ChildProduct> products;
 }
-//"categoryId": "55",
-//        "categoryName": "Slushes",
-//        "image": "https://urldefense.com/v3/__https://lh3.googleusercontent.com/T1cbKFr_m-vdqKRpKNqKuxJISgRexTNAcHfnTmy00Dn9aB7zKEakYs3_VgYxTCQCRjNE2G6j7V8TxVRKYrwQ__;!!GF_29dbcQIUBPA!lRFSIM9G6f7k9rqjTo1sG4D4Ja53S2w9QFVTQ9tJTdHaWU8FAfyFcKW-BFlGbXkA0A$ [lh3[.]googleusercontent[.]com]",
-//        "thumbnail": "https://urldefense.com/v3/__https://lh3.googleusercontent.com/T1cbKFr_m-vdqKRpKNqKuxJISgRexTNAcHfnTmy00Dn9aB7zKEakYs3_VgYxTCQCRjNE2G6j7V8TxVRKYrwQ__;!!GF_29dbcQIUBPA!lRFSIM9G6f7k9rqjTo1sG4D4Ja53S2w9QFVTQ9tJTdHaWU8FAfyFcKW-BFlGbXkA0A$ [lh3[.]googleusercontent[.]com]",
-//        "backgroundColor": "#666666",
-//        "textColor": "#333333",
-//        "isHeading": "false",
-//        "createdAt": "2017-07-06T19:24:29.844Z",
-//        "updatedAt": "2020-06-29T20:11:14.804Z",
-//        "contentId": "menucategory-frozen-drinks-ntl-menu",
-//        "showAtCheckout": "false",
-//        "categories": [
-//        {
-//        "categoryId": "163"
-//        },
-//        {
-//        "categoryId": "61"
-//        }
-//        ],
-//        "products": []

@@ -18,11 +18,3 @@ public class ModifierGroup implements Serializable {
     private String effectiveDate;
     private String expirationDate;
 }
-//    {
-//            "modifierGroupId": "4550",
-//            "modifierGroupName": "Crave Sauce",
-//            "type": "Sauces",
-//            "contentId": "mmg-crave-sauce",
-//            "effectiveDate": null,
-//            "expirationDate": null
-//            },
