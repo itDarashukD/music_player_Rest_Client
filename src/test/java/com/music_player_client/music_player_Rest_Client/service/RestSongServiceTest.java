@@ -9,8 +9,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.logging.log4j2.SpringBootPropertySource;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -36,7 +39,9 @@ class RestSongServiceTest {
     public void setUp() {
         wireMockRule = new WireMockRule(Options.DYNAMIC_PORT);
         wireMockRule.start();
+
         int port = wireMockRule.port();
+        System.setProperty("port", String.valueOf(port));
         ReflectionTestUtils.setField(restSongService, "port", String.valueOf(port));
     }
 
@@ -105,3 +110,10 @@ class RestSongServiceTest {
 //    @Rule
 //    public WireMockRule wireMockRule = new WireMockRule(wireMockConfig().dynamicPort().dynamicHttpsPort()); good for multithreading
 //    public WireMockRule wireMockRule = new WireMockRule(wireMockConfig().port(8888));
+
+/**
+ * @TestPropertySource("/application-test.properties")
+ * @TestPropertySource(properties = {"foo=bar"}) //concrete var = value
+ * working with
+ * @Value("${foo}") private String foo;
+ */

@@ -1,6 +1,7 @@
 package com.music_player_client.music_player_Rest_Client.service;
 
 import com.music_player_client.music_player_Rest_Client.entity.Song;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,15 @@ public class RestSongService implements IRestSongService {
     @Value("${port}")
     private String port;
 
+//    @Value("#{systemProperties['library.system.property']}")//
+
     public List<Song> getAllSongs() {
+//        System.out.println(this.port);
+//        String port = null;
+//        if (Objects.equals(this.port, String.valueOf(0))) {//0 - value from ApplicationProperties test
+//             port = System.getProperty("port");
+//        }
+
         String HTTP_REQUEST_GET_ALL_SONGS = host + port + "/song/";
         Song[] songs = restTemplate.getForObject(HTTP_REQUEST_GET_ALL_SONGS, Song[].class);
         return Arrays.asList(songs);
