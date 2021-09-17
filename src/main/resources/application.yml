@@ -1,8 +1,8 @@
 spring:
   profiles:
     active:
-      - dev
-#      - ${EXPEDIA_ENVIRONMENT:test}  //with use SYSTEM VARIABLES
+      - test
+#      - ${EXPEDIA_ENVIRONMENT:test}  //with use SYSTEM VARIABLES or SPRING_PROFILES_ACTIVE
   application:
     name: "music_player_Rest_Client"
 ---
@@ -11,23 +11,23 @@ spring:
   config:
     activate:
       on-profile: test
+
+  datasource:
+    driver-class-name: "org.hsqldb.jdbcDriver"
+    url: "jdbc:hsqldb:mem:testbase"
+    username: "sa"
+    password:
+
+#  jpa:
+#    show-sql: true
+#    hibernate:
+#      ddl-auto: create-drop
+
 name: test-YAML
 environment: testing
 
 port: 0
 host: "http://localhost:"
-
-#next for clarity
-database:
-  jdbc:
-    url: jdbc:postresql:/localhost:5432
-  username: foo
-  password: bar
-
-security:
-  user: user
-  password: weak
-
 
 ---
 
@@ -37,28 +37,25 @@ spring:
       on-profile: prod
 name: prod-YAML
 environment: production
-#next for clarity
-component:
-  idm:
-      url: myurl
-      user: user
-      password: password
-      description: >
-        this should be a long
-        description
-  service:
-      url: myurlservice
-      token: token
-      description: >
-        this should be another long
-        description
+
 
 ---
+
 
 spring:
   config:
     activate:
       on-profile: dev
+
+  datasource:
+    driver-class-name: "org.hsqldb.jdbc.JDBCDriver"
+    url: "jdbc:hsqldb:hsql://localhost/"
+    username: "sa"
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+
 name: ${DEV_NAME:dev-YAML}
 environment: development
 
@@ -67,16 +64,4 @@ server:
 
 port: 8080
 host: "http://localhost:"
-
-#next for clarity
-database:
-  jdbc:
-    url: jdbc:postresql:/localhost:5432
-  username: devName
-  password: devPass
-secret: foo
-
-security:
-  user: user
-  password: weak
 

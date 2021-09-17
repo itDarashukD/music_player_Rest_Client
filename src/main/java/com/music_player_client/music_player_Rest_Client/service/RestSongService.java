@@ -1,7 +1,8 @@
 package com.music_player_client.music_player_Rest_Client.service;
 
 import com.music_player_client.music_player_Rest_Client.entity.Song;
-import lombok.val;
+import com.music_player_client.music_player_Rest_Client.repository.SongRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -10,9 +11,16 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 @Service
 public class RestSongService implements IRestSongService {
 
+    private SongRepository songRepository;
+
+    @Autowired
+    public RestSongService(SongRepository songRepository) {
+        this.songRepository = songRepository;
+    }
     @Autowired
     private RestTemplate restTemplate;
 
@@ -21,23 +29,27 @@ public class RestSongService implements IRestSongService {
     @Value("${port}")
     private String port;
 
-//    @Value("#{systemProperties['library.system.property']}")//
-
     public List<Song> getAllSongs() {
-//        System.out.println(this.port);
-//        String port = null;
-//        if (Objects.equals(this.port, String.valueOf(0))) {//0 - value from ApplicationProperties test
-//             port = System.getProperty("port");
-//        }
-
         String HTTP_REQUEST_GET_ALL_SONGS = host + port + "/song/";
         Song[] songs = restTemplate.getForObject(HTTP_REQUEST_GET_ALL_SONGS, Song[].class);
+        if (songs != null) {
+            saveSong(Arrays.asList(songs));
+        }
         return Arrays.asList(songs);
+    }
+
+    private void saveSong(List<Song> songs) {
+        songs.forEach(song -> songRepository.save(song));
+        System.out.println("song was push to repository");
     }
 
     public Song findById(Long song_id) {
         String HTTP_REQUEST_GET_SONG_BY_ID = host + port + "/song/getSong/{song_id}";
-        return restTemplate.getForObject(HTTP_REQUEST_GET_SONG_BY_ID, Song.class, song_id);
+        Song song = restTemplate.getForObject(HTTP_REQUEST_GET_SONG_BY_ID, Song.class, song_id);
+        if (song != null) {
+            saveSong(List.of(song));
+        }
+        return song;
     }
 
     @Override
