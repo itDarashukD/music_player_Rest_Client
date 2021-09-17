@@ -1,0 +1,1 @@
+[{  "id" :  "1",  "album_id" :  "2", "source_id" :  "1 ",  "name" :  "firstSong" , "notes" :  "firstSongNotes",  "year" :  "2020", "storageTypes" :  "CLOUD_STORAGE"   }, {  "id" :  "2",  "album_id" :  "2", "source_id" :  "2",  "name" :  "secondSong" , "notes" :  "secondSongNotes",  "year" :  "2021", "storageTypes" :  "FILE_SYSTEM" }]

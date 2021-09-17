@@ -9,5 +9,5 @@ public interface IRestSongService {
 
     List<Song> getAllSongs();
     Song findById(Long song_id);
-    ResponseEntity<byte[]> getFile(String songName, String fileType, String storageType);
+    byte[] getFile(String songName, String fileType, String storageType);
 }
