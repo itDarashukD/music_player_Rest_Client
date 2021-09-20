@@ -28,8 +28,8 @@ public class JsonParser {
         nationalMenu = objectMapper.readValue(json, National_menu.class);
         List<Category> list = beginRetrievingCategory();
         List<Product> products = getProducts(list);
-        products.forEach(System.out::println);
-//        System.out.println(list.stream().map(Category::getCategoryId).collect(Collectors.toList()));
+ //        products.forEach(System.out::println);
+ //       System.out.println(list.stream().map(Category::getCategoryId).collect(Collectors.toList()));
     }
 
     public List<Category> beginRetrievingCategory() {
@@ -71,10 +71,13 @@ public class JsonParser {
     public List<Product> getProducts(List<Category> list) {
         List<Product> products = nationalMenu.getProducts();
 
-        List<ChildProduct> childProductList = list.stream()
-                .map(Category::getProducts)
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+        products.forEach(System.out::println);
+
+        List<ChildProduct> childProductList =
+                list.stream()
+                        .map(Category::getProducts)
+                        .flatMap(Collection::stream)
+                        .collect(Collectors.toList());
 
         List<String> childProductIdList = childProductList.stream()
                 .map(childProduct -> childProduct.getProductId())
