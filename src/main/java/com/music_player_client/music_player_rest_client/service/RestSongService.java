@@ -1,7 +1,7 @@
-package com.music_player_client.music_player_Rest_Client.service;
+package com.music_player_client.music_player_rest_client.service;
 
-import com.music_player_client.music_player_Rest_Client.entity.Song;
-import com.music_player_client.music_player_Rest_Client.repository.SongRepository;
+import com.music_player_client.music_player_rest_client.entity.Song;
+import com.music_player_client.music_player_rest_client.repository.SongRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

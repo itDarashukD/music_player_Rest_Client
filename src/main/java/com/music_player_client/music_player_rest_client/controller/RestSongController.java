@@ -1,7 +1,7 @@
-package com.music_player_client.music_player_Rest_Client.controller;
+package com.music_player_client.music_player_rest_client.controller;
 
-import com.music_player_client.music_player_Rest_Client.entity.Song;
-import com.music_player_client.music_player_Rest_Client.service.IRestSongService;
+import com.music_player_client.music_player_rest_client.entity.Song;
+import com.music_player_client.music_player_rest_client.service.IRestSongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

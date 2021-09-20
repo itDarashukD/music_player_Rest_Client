@@ -1,7 +1,6 @@
-package com.music_player_client.music_player_Rest_Client.service;
+package com.music_player_client.music_player_rest_client.service;
 
-import com.music_player_client.music_player_Rest_Client.entity.Song;
-import org.springframework.stereotype.Service;
+import com.music_player_client.music_player_rest_client.entity.Song;
 
 import java.util.List;
 

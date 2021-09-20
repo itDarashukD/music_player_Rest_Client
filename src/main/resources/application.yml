@@ -12,16 +12,11 @@ spring:
     activate:
       on-profile: test
 
-  datasource:
-    driver-class-name: "org.hsqldb.jdbcDriver"
-    url: "jdbc:hsqldb:mem:testbase"
-    username: "sa"
-    password:
-
-#  jpa:
-#    show-sql: true
-#    hibernate:
-#      ddl-auto: create-drop
+#  datasource:                                    //this is redundant
+#    driver-class-name: "org.hsqldb.jdbcDriver"
+#    url: "jdbc:hsqldb:mem:testbase"
+#    username: "sa"
+#    password:
 
 name: test-YAML
 environment: testing
@@ -48,13 +43,10 @@ spring:
       on-profile: dev
 
   datasource:
-    driver-class-name: "org.hsqldb.jdbc.JDBCDriver"
-    url: "jdbc:hsqldb:hsql://localhost/"
-    username: "sa"
-    password:
-  jpa:
-    hibernate:
-      ddl-auto: update
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/client
+    username: root
+    password: root
 
 name: ${DEV_NAME:dev-YAML}
 environment: development

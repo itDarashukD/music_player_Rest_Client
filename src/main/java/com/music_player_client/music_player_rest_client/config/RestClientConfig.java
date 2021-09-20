@@ -1,4 +1,4 @@
-package com.music_player_client.music_player_Rest_Client.config;
+package com.music_player_client.music_player_rest_client.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

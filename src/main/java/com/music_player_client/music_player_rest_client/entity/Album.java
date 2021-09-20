@@ -1,4 +1,4 @@
-package com.music_player_client.music_player_Rest_Client.entity;
+package com.music_player_client.music_player_rest_client.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

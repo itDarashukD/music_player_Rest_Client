@@ -1,6 +1,6 @@
-package com.music_player_client.music_player_Rest_Client.repository;
+package com.music_player_client.music_player_rest_client.repository;
 
-import com.music_player_client.music_player_Rest_Client.entity.Song;
+import com.music_player_client.music_player_rest_client.entity.Song;
 import org.apache.ibatis.annotations.*;
 import org.springframework.data.repository.query.Param;
 

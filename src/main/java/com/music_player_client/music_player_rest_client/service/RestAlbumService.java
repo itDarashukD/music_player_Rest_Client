@@ -1,6 +1,6 @@
-package com.music_player_client.music_player_Rest_Client.service;
+package com.music_player_client.music_player_rest_client.service;
 
-import com.music_player_client.music_player_Rest_Client.entity.Album;
+import com.music_player_client.music_player_rest_client.entity.Album;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
