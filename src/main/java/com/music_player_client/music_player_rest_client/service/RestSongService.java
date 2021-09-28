@@ -5,6 +5,9 @@ import com.music_player_client.music_player_rest_client.repository.SongRepositor
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -29,7 +32,11 @@ public class RestSongService implements IRestSongService {
     @Value("${port}")
     private String port;
 
+    @Cacheable("getAll")
     public List<Song> getAllSongs() {
+        simulateSlowService();
+
+
         String HTTP_REQUEST_GET_ALL_SONGS = host + port + "/song/";
         Song[] songs = restTemplate.getForObject(HTTP_REQUEST_GET_ALL_SONGS, Song[].class);
         if (songs != null) {
@@ -38,12 +45,25 @@ public class RestSongService implements IRestSongService {
         return Arrays.asList(songs);
     }
 
+    private void simulateSlowService() {
+        try {
+            long time = 3000L;
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     private void saveSong(List<Song> songs) {
         songs.forEach(song -> songRepository.save(song));
         System.out.println("song was push to repository");
     }
 
+    @Cacheable("getById")
     public Song findById(Long song_id) {
+        simulateSlowService();
+
+
         String HTTP_REQUEST_GET_SONG_BY_ID = host + port + "/song/getSong/{song_id}";
         Song song = restTemplate.getForObject(HTTP_REQUEST_GET_SONG_BY_ID, Song.class, song_id);
         if (song != null) {
@@ -51,6 +71,7 @@ public class RestSongService implements IRestSongService {
         }
         return song;
     }
+
 
     @Override
     public byte[] getFile(String songName, String fileType, String storageType) {

@@ -3,6 +3,7 @@ package com.music_player_client.music_player_rest_client.controller;
 import com.music_player_client.music_player_rest_client.entity.Song;
 import com.music_player_client.music_player_rest_client.service.IRestSongService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,13 +15,14 @@ import java.util.List;
 public class RestSongController {
 
     private IRestSongService songService;
+
     @Autowired
     public RestSongController(IRestSongService songService) {
         this.songService = songService;
     }
 
     @GetMapping(value = "/")
-    List<Song> getAll() {
+    public List<Song> getAll() {
         return songService.getAllSongs();
     }
 
